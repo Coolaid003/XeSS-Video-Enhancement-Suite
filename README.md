@@ -4,7 +4,9 @@ Windows 上的视频超分与 2× 插帧。R4 提供三个中文节点：**视�
 
 本仓库本次只发布 ComfyUI 节点与配套引擎。独立离线工具箱、实时捕获工具箱将分项目发布，不包含 OBS、桌面捕获或 HTML 前端。
 
-[R4.2 下载与更新说明](https://github.com/gggz114514-oss/XeSS-Video-Enhancement-Suite/releases/tag/runtime-2026.09.08-r4.2)
+[R4.3 下载与更新说明](https://github.com/gggz114514-oss/XeSS-Video-Enhancement-Suite/releases/tag/runtime-2026.09.14-r4.3)
+
+**R4.3：GPU Block 统一为经过验收的 Lite V4。** 修复置信度计算的共享内存边界读取，并优化搜索寻址；保留全分辨率 refine、AI 深度、Mask、后处理和编码器选择。节点名称与字段不变；已有 R4 用户 `git pull --ff-only` 后重启 ComfyUI、刷新页面，自动安装本版配套运行库。已修正边界版与旧版的画面可能不同，不宣称新旧输出逐字节相同。[版本说明与验收](docs/R4_3_LITE_V4.md)
 
 **R4.2 兼容修复：** Arc A 系列使用 GPU Block、GPU DIS 或 AMD 光流时若出现绿/紫色竖条，可开启节点的「Arc A 系列兼容模式」。默认关闭，支持超分、2× 插帧及组合节点；它与「抗竖纹」画质滤镜不同。CPU DIS 和 Intel 视频接口不走这段共享路径，无需此开关。已安装 R4/R4.1 的用户更新节点并重启 ComfyUI、刷新页面即可自动获取配套运行库。[详细说明](docs/ARC_A_COMPATIBILITY.md)
 
@@ -23,7 +25,7 @@ git clone https://github.com/gggz114514-oss/XeSS-Video-Enhancement-Suite.git
 无法访问 GitHub 时，从本版本 Release 下载 `xess-comfy-runtime-*.zip`，在节点目录运行：
 
 ```powershell
-.\install_runtime.bat -AssetPath "D:\Downloads\xess-comfy-runtime-windows-x64-2026.09.08-r4.2.zip"
+.\install_runtime.bat -AssetPath "D:\Downloads\xess-comfy-runtime-windows-x64-2026.09.14-r4.3.zip"
 ```
 
 盘符只是示例，可以安装在任意可写目录。脚本未找到 Python 时，用 `-Python "你的ComfyUI Python完整路径"` 指定。**不要把运行时压缩包覆盖到 ComfyUI 根目录。**
@@ -62,7 +64,7 @@ git pull --ff-only
 
 | 档位 | 定位与边界 |
 | --- | --- |
-| **GPU Block（默认）** | 自研 GPU 光流，快速路线；不是保证所有素材画质最好的档位 |
+| **GPU Block（默认）** | Lite V4：半宽半高双向搜索 + 全分辨率 refine，快速路线；不保证所有素材画质最好 |
 | CPU DIS | 传统光流，稳定兜底；CPU 计算光流，XeSS/XeFG 仍使用 GPU |
 | Intel 视频接口 | Intel 原生 AI 视频处理，不是 XeSS；速度优先，受硬件、尺寸和颜色格式限制 |
 | GPU DIS（实验） | GPU 迁移路线，允许使用，但不保证与 CPU DIS 输出完全相同或更快 |
